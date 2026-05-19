@@ -7,6 +7,13 @@
         <p class="category-desc">{$category.description|escape}</p>
     {/if}
 
+    <p class="sort-links">
+        Сортировка:
+        <a href="?route=category&amp;id={$category.id}&amp;sort=date"{if $sort == 'date'} class="active"{/if}>по дате</a>
+        |
+        <a href="?route=category&amp;id={$category.id}&amp;sort=views"{if $sort == 'views'} class="active"{/if}>по просмотрам</a>
+    </p>
+
     {if $articles|@count == 0}
         <p>В этой категории пока нет статей.</p>
     {else}

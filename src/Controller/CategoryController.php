@@ -50,13 +50,20 @@ final class CategoryController
             return;
         }
 
-        $articles = $articleRepo->findByCategory($id, self::LIST_LIMIT, 0);
+        $sort = $this->resolveSort($params['sort'] ?? null);
+        $articles = $articleRepo->findByCategory($id, self::LIST_LIMIT, 0, $sort);
 
         View::render('category.tpl', [
             'title' => $category['name'] . ' — ' . $appName,
             'app_name' => $appName,
             'category' => $category,
             'articles' => $articles,
+            'sort' => $sort,
         ]);
+    }
+
+    private function resolveSort(mixed $sort): string
+    {
+        return $sort === 'views' ? 'views' : 'date';
     }
 }
