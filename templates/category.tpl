@@ -31,6 +31,18 @@
                 </li>
             {/foreach}
         </ul>
+
+        {if $total_pages > 1}
+            <nav class="pagination">
+                {if $has_prev}
+                    <a href="?route=category&amp;id={$category.id}&amp;sort={$sort}&amp;page={$prev_page}">← Назад</a>
+                {/if}
+                <span class="page-info">Страница {$current_page} из {$total_pages}</span>
+                {if $has_next}
+                    <a href="?route=category&amp;id={$category.id}&amp;sort={$sort}&amp;page={$next_page}">Вперёд →</a>
+                {/if}
+            </nav>
+        {/if}
     {/if}
 
     <p><a href="?route=home">← На главную</a></p>

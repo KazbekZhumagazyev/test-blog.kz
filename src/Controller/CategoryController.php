@@ -11,8 +11,6 @@ use App\View;
 
 final class CategoryController
 {
-    private const LIST_LIMIT = 1000;
-
     public function __construct(
         private readonly array $config,
     ) {
@@ -51,7 +49,20 @@ final class CategoryController
         }
 
         $sort = $this->resolveSort($params['sort'] ?? null);
-        $articles = $articleRepo->findByCategory($id, self::LIST_LIMIT, 0, $sort);
+        $perPage = max(1, (int) ($this->config['per_page'] ?? 10));
+        $total = $articleRepo->countByCategory($id);
+        $totalPages = max(1, (int) ceil($total / $perPage));
+
+        $page = isset($params['page']) ? (int) $params['page'] : 1;
+        if ($page < 1) {
+            $page = 1;
+        }
+        if ($page > $totalPages) {
+            $page = $totalPages;
+        }
+
+        $offset = ($page - 1) * $perPage;
+        $articles = $articleRepo->findByCategory($id, $perPage, $offset, $sort);
 
         View::render('category.tpl', [
             'title' => $category['name'] . ' — ' . $appName,
@@ -59,6 +70,13 @@ final class CategoryController
             'category' => $category,
             'articles' => $articles,
             'sort' => $sort,
+            'current_page' => $page,
+            'total_pages' => $totalPages,
+            'total_articles' => $total,
+            'has_prev' => $page > 1,
+            'has_next' => $page < $totalPages,
+            'prev_page' => $page - 1,
+            'next_page' => $page + 1,
         ]);
     }
 
