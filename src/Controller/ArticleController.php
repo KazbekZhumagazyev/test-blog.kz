@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Database;
+use App\Repository\ArticleRepository;
 use App\View;
 
 final class ArticleController
@@ -29,11 +31,27 @@ final class ArticleController
             return;
         }
 
+        $articleRepo = new ArticleRepository(Database::getConnection());
+        $article = $articleRepo->findById($id);
+
+        if ($article === null) {
+            http_response_code(404);
+            View::render('error.tpl', [
+                'title' => 'Не найдено — ' . $appName,
+                'app_name' => $appName,
+                'message' => 'Статья не найдена',
+            ]);
+
+            return;
+        }
+
+        $categories = $articleRepo->findCategoriesForArticle($id);
+
         View::render('article.tpl', [
-            'title' => 'Статья #' . $id . ' — ' . $appName,
+            'title' => $article['title'] . ' — ' . $appName,
             'app_name' => $appName,
-            'page_title' => 'Статья #' . $id,
-            'article_id' => $id,
+            'article' => $article,
+            'categories' => $categories,
         ]);
     }
 }

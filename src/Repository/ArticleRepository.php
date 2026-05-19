@@ -27,6 +27,23 @@ final class ArticleRepository
         return $row !== false ? $row : null;
     }
 
+    /**
+     * @return list<array<string, mixed>>
+     */
+    public function findCategoriesForArticle(int $articleId): array
+    {
+        $stmt = $this->db->prepare(
+            'SELECT c.id, c.name
+             FROM categories c
+             INNER JOIN article_category ac ON ac.category_id = c.id
+             WHERE ac.article_id = :article_id
+             ORDER BY c.name ASC',
+        );
+        $stmt->execute(['article_id' => $articleId]);
+
+        return $stmt->fetchAll();
+    }
+
     public function countByCategory(int $categoryId): int
     {
         $stmt = $this->db->prepare(
