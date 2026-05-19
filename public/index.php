@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-use App\View;
+use App\Router;
 
 $config = require dirname(__DIR__) . '/bootstrap.php';
 
-$appName = $config['name'] ?? 'Blog';
+$route = $_GET['route'] ?? 'home';
+$params = [
+    'id' => $_GET['id'] ?? null,
+];
 
-View::render('setup.tpl', [
-    'title' => $appName,
-    'app_name' => $appName,
-]);
+(new Router($config))->dispatch($route, $params);

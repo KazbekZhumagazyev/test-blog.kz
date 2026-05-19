@@ -7,7 +7,10 @@
 </head>
 <body>
     <header>
-        <h1><a href="/">{$app_name|escape}</a></h1>
+        <h1><a href="?route=home">{$app_name|escape}</a></h1>
+        <nav>
+            <a href="?route=home">Главная</a>
+        </nav>
     </header>
     <main>
         {block name=content}{/block}
