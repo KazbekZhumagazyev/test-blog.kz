@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Database;
+use App\Repository\ArticleRepository;
+use App\Repository\CategoryRepository;
 use App\View;
 
 final class CategoryController
 {
+    private const LIST_LIMIT = 1000;
+
     public function __construct(
         private readonly array $config,
     ) {
@@ -29,11 +34,29 @@ final class CategoryController
             return;
         }
 
+        $db = Database::getConnection();
+        $categoryRepo = new CategoryRepository($db);
+        $articleRepo = new ArticleRepository($db);
+
+        $category = $categoryRepo->findById($id);
+        if ($category === null) {
+            http_response_code(404);
+            View::render('error.tpl', [
+                'title' => 'Не найдено — ' . $appName,
+                'app_name' => $appName,
+                'message' => 'Категория не найдена',
+            ]);
+
+            return;
+        }
+
+        $articles = $articleRepo->findByCategory($id, self::LIST_LIMIT, 0);
+
         View::render('category.tpl', [
-            'title' => 'Категория #' . $id . ' — ' . $appName,
+            'title' => $category['name'] . ' — ' . $appName,
             'app_name' => $appName,
-            'page_title' => 'Категория #' . $id,
-            'category_id' => $id,
+            'category' => $category,
+            'articles' => $articles,
         ]);
     }
 }
