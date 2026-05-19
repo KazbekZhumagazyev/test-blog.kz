@@ -1,0 +1,12 @@
+.git
+.idea
+.vscode
+.cursor
+vendor
+templates_c
+cache
+node_modules
+.env
+TZ.md
+DEVELOPMENT_STEPS.md
+notes

@@ -2,17 +2,35 @@
 
 Небольшой блог: PHP 8.1, MySQL, Smarty. Без фреймворков.
 
-Сейчас в работе — поднимаю окружение и схему БД.
-
 ## Стек
 
 - PHP 8.1+
 - MySQL
 - Smarty
 
-## Установка
+## Запуск через Docker
 
-Пока не готово. Добавлю после docker-compose и composer install.
+```bash
+docker compose up -d --build
+docker compose exec web php database/seed.php
+```
+
+Сайт: http://localhost:8080/?route=home
+
+Остановка: `docker compose down` (данные MySQL в volume `mysql_data`).
+
+Переменные для контейнера `web` заданы в `docker-compose.yml`. Для локального `.env` вне Docker используйте `DB_HOST=127.0.0.1`.
+
+## Локально (без Docker)
+
+```bash
+composer install
+cp .env.example .env
+# настроить .env и создать БД/пользователя MySQL
+mysql -u blog -p blog < database/schema.sql
+php database/seed.php
+cd public && php -S localhost:8080
+```
 
 ## Использование ИИ
 
