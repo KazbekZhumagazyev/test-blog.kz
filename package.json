@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "scripts": {
+    "scss": "sass assets/scss/main.scss public/css/style.css --style=expanded",
+    "scss:watch": "sass --watch assets/scss/main.scss public/css/style.css"
+  },
+  "devDependencies": {
+    "sass": "^1.77.8"
+  }
+}

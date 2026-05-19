@@ -32,6 +32,15 @@ php database/seed.php
 cd public && php -S localhost:8080
 ```
 
+## Стили (SCSS)
+
+Скомпилированный CSS: `public/css/style.css`. Пересборка:
+
+```bash
+npm install
+npm run scss
+```
+
 ## Использование ИИ
 
 Да, в работе использовал **Cursor** (встроенный ИИ-ассистент).
