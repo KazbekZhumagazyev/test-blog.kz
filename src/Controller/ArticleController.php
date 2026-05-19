@@ -49,12 +49,14 @@ final class ArticleController
         $article = $articleRepo->findById($id);
 
         $categories = $articleRepo->findCategoriesForArticle($id);
+        $related = $articleRepo->findRelated($id, 3);
 
         View::render('article.tpl', [
             'title' => $article['title'] . ' — ' . $appName,
             'app_name' => $appName,
             'article' => $article,
             'categories' => $categories,
+            'related' => $related,
         ]);
     }
 }

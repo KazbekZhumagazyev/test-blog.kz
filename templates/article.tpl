@@ -33,5 +33,19 @@
         </div>
     </article>
 
+    {if $related|@count > 0}
+        <aside class="related-articles">
+            <h3>Похожие статьи</h3>
+            <ul>
+                {foreach $related as $item}
+                    <li>
+                        <a href="?route=article&amp;id={$item.id}">{$item.title|escape}</a>
+                        <span class="meta">{$item.published_at|date_format:'%d.%m.%Y'}</span>
+                    </li>
+                {/foreach}
+            </ul>
+        </aside>
+    {/if}
+
     <p><a href="?route=home">← На главную</a></p>
 {/block}

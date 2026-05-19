@@ -106,4 +106,29 @@ final class ArticleRepository
     {
         return $this->findByCategory($categoryId, $limit, 0, 'date');
     }
+
+    /**
+     * Похожие статьи — из общих категорий, без текущей.
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function findRelated(int $articleId, int $limit = 3): array
+    {
+        $stmt = $this->db->prepare(
+            'SELECT DISTINCT a.id, a.title, a.description, a.image, a.views, a.published_at
+             FROM articles a
+             INNER JOIN article_category ac ON ac.article_id = a.id
+             WHERE ac.category_id IN (
+                 SELECT category_id FROM article_category WHERE article_id = :article_id
+             )
+             AND a.id != :article_id
+             ORDER BY a.published_at DESC
+             LIMIT :limit',
+        );
+        $stmt->bindValue('article_id', $articleId, PDO::PARAM_INT);
+        $stmt->bindValue('limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
 }
