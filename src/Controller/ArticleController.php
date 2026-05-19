@@ -45,6 +45,9 @@ final class ArticleController
             return;
         }
 
+        $articleRepo->incrementViews($id);
+        $article = $articleRepo->findById($id);
+
         $categories = $articleRepo->findCategoriesForArticle($id);
 
         View::render('article.tpl', [

@@ -27,6 +27,14 @@ final class ArticleRepository
         return $row !== false ? $row : null;
     }
 
+    public function incrementViews(int $id): void
+    {
+        $stmt = $this->db->prepare(
+            'UPDATE articles SET views = views + 1 WHERE id = :id',
+        );
+        $stmt->execute(['id' => $id]);
+    }
+
     /**
      * @return list<array<string, mixed>>
      */
