@@ -1,0 +1,20 @@
+/vendor/
+/.env
+/public/uploads/*
+!/public/uploads/.gitkeep
+
+/templates_c/
+/cache/
+
+.idea/
+.vscode/
+.cursor/
+*.swp
+.DS_Store
+
+/node_modules/
+
+# локальные заметки (не в репозиторий)
+/TZ.md
+/DEVELOPMENT_STEPS.md
+/notes/
